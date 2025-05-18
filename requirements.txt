@@ -1,4 +1,4 @@
--e file:///Users/csagdic/Documents/mlops-zoomcamp
+-e .
 certifi==2025.4.26
 cfgv==3.4.0
 charset-normalizer==3.4.2
