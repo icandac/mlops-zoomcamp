@@ -40,6 +40,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run pre-commit
-        uses: pre-commit/action@v4
+        uses: pre-commit/action@v3.0.1
         with:
           extra_args: --all-files
