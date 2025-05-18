@@ -43,5 +43,13 @@ uv pip install -e .
 pre-commit install
 ```
 
+### 6. make the git commits and pushed automated
+
+```bash
+chmod +x git-auto.sh
+```
+
+now you can just do ./git-auto.sh to push commits.
+
 ## ready to code  
 you're now all set to start building your project.
