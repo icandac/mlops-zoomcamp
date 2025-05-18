@@ -1,23 +1,46 @@
-name: CI 
+# .github/workflows/ci.yml
+
+name: CI
 
 on:
   push:
   pull_request:
-  workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+  test-and-lint:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.10]
 
-      - name: Set up Python
-        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # 5.2.0
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Cache venv
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
+
+      - name: Create & activate virtualenv
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
 
       - name: Install dependencies
-        run: pip install uv && uv pip install -e . --system
+        run: |
+          source .venv/bin/activate
+          pip install pre-commit
+          pip install -r requirements.txt
 
-      - name: Run tests 
-        run: pytest --cov 
+      - name: Run pre-commit
+        uses: pre-commit/action@v4
+        with:
+          extra_args: --all-files
