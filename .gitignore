@@ -2,12 +2,18 @@
 __pycache__/
 *.py[cod]
 *$py.class
+__init__.py
 
 # C extensions
 *.so
 
 # Specific folders
 notebooks
+data
+.DS_Store
+
+# Data
+*.parquet
 
 # Distribution / packaging
 .Python
